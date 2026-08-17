@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import type { Incident } from '../../types/incident';
+import { IndianEmblem } from './IndianEmblem';
 import { Lock, FileText, CheckCircle2, Battery, X } from 'lucide-react';
 
 interface DataCapsuleModalProps {
@@ -35,75 +36,75 @@ export const DataCapsuleModal: React.FC<DataCapsuleModalProps> = ({ incident, on
   const encryptedPayloadSim = btoa(JSON.stringify(capsuleData));
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-      <div className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-150">
-        <div className="flex items-center justify-between bg-slate-950 px-6 py-4 border-b border-slate-800">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 font-sans">
+      <div className="bg-zinc-900 border border-zinc-700 rounded-xl w-full max-w-2xl overflow-hidden shadow-2xl animate-in fade-in zoom-in duration-150">
+        <div className="flex items-center justify-between bg-zinc-950 px-5 py-3 border-b border-zinc-800">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-emerald-950 border border-emerald-800/50 rounded-lg">
-              <Lock className="w-5 h-5 text-emerald-400" />
+            <div className="p-1.5 bg-zinc-900 border border-zinc-700 rounded-lg">
+              <IndianEmblem className="w-6 h-7 text-zinc-200" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-slate-100 flex items-center gap-2">
-                Emergency Data Capsule
-                <span className="text-xs bg-emerald-900/60 text-emerald-300 border border-emerald-700/50 px-2 py-0.5 rounded font-mono">
-                  AES-256 SECURED
+              <h2 className="text-sm font-bold text-zinc-100 flex items-center gap-2">
+                Emergency Telemetry Capsule
+                <span className="text-[10px] bg-zinc-800 text-orange-400 border border-zinc-700 px-2 py-0.5 rounded font-mono font-bold">
+                  AES-256 Payload
                 </span>
               </h2>
-              <p className="text-xs text-slate-400">
-                Self-contained incident payload for offline persistence & dynamic sync
+              <p className="text-[11px] text-zinc-400">
+                Self-contained offline record payload stored in browser IndexedDB
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-white bg-slate-800/60 hover:bg-slate-800 rounded-lg transition-colors"
+            className="p-1 text-zinc-400 hover:text-white bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
-        <div className="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="bg-slate-950 p-3 rounded-lg border border-slate-800 text-xs">
-              <span className="text-slate-400 block text-[10px] uppercase font-bold">Incident ID</span>
-              <span className="font-mono text-emerald-400 font-bold">{incident.incidentId}</span>
+        <div className="p-5 space-y-4 max-h-[75vh] overflow-y-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            <div className="bg-zinc-950 p-2.5 rounded-lg border border-zinc-800 text-xs">
+              <span className="text-zinc-400 block text-[10px] uppercase font-bold">Incident ID</span>
+              <span className="font-mono text-orange-400 font-bold">{incident.incidentId}</span>
             </div>
-            <div className="bg-slate-950 p-3 rounded-lg border border-slate-800 text-xs">
-              <span className="text-slate-400 block text-[10px] uppercase font-bold">Tourist ID</span>
-              <span className="font-mono text-slate-200">{incident.touristId}</span>
+            <div className="bg-zinc-950 p-2.5 rounded-lg border border-zinc-800 text-xs">
+              <span className="text-zinc-400 block text-[10px] uppercase font-bold">Tourist ID</span>
+              <span className="font-mono text-zinc-200 font-bold">{incident.touristId}</span>
             </div>
-            <div className="bg-slate-950 p-3 rounded-lg border border-slate-800 text-xs">
-              <span className="text-slate-400 block text-[10px] uppercase font-bold">Battery</span>
-              <span className="font-mono text-amber-400 flex items-center gap-1">
+            <div className="bg-zinc-950 p-2.5 rounded-lg border border-zinc-800 text-xs">
+              <span className="text-zinc-400 block text-[10px] uppercase font-bold">Battery Status</span>
+              <span className="font-mono text-amber-300 flex items-center gap-1 font-bold">
                 <Battery className="w-3.5 h-3.5" /> {incident.batteryLevel}%
               </span>
             </div>
-            <div className="bg-slate-950 p-3 rounded-lg border border-slate-800 text-xs">
-              <span className="text-slate-400 block text-[10px] uppercase font-bold">Sync Status</span>
-              <span className={`font-mono font-bold ${incident.syncStatus === 'SYNCED' ? 'text-emerald-400' : 'text-amber-400'}`}>
+            <div className="bg-zinc-950 p-2.5 rounded-lg border border-zinc-800 text-xs">
+              <span className="text-zinc-400 block text-[10px] uppercase font-bold">Sync Status</span>
+              <span className={`font-mono font-bold ${incident.syncStatus === 'SYNCED' ? 'text-orange-400' : 'text-amber-300'}`}>
                 {incident.syncStatus}
               </span>
             </div>
           </div>
 
-          <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center justify-between">
-              <span>Telemetry & Location Data</span>
-              <span className="text-[11px] font-normal text-emerald-400 font-mono">
+          <div className="bg-zinc-950 p-3.5 rounded-lg border border-zinc-800 space-y-2.5">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-300 flex items-center justify-between">
+              <span>GNSS & Search Area Bounds</span>
+              <span className="text-[10px] font-bold text-orange-400 font-mono">
                 {incident.estimatedLocation.confidence}% Confidence
               </span>
             </h4>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-              <div className="bg-slate-900 p-2.5 rounded border border-slate-800">
-                <span className="text-slate-400 text-[10px] block font-bold uppercase">Confirmed GPS</span>
-                <span className="font-mono text-emerald-300">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+              <div className="bg-zinc-900 p-2 rounded border border-zinc-800">
+                <span className="text-zinc-400 text-[10px] block font-bold uppercase">Latitude / Longitude</span>
+                <span className="font-mono text-orange-300 font-bold">
                   {incident.lastKnownLocation.latitude.toFixed(6)}, {incident.lastKnownLocation.longitude.toFixed(6)}
                 </span>
               </div>
-              <div className="bg-slate-900 p-2.5 rounded border border-slate-800">
-                <span className="text-slate-400 text-[10px] block font-bold uppercase">Search Zone Radius</span>
-                <span className="font-mono text-amber-300">
+              <div className="bg-zinc-900 p-2 rounded border border-zinc-800">
+                <span className="text-zinc-400 text-[10px] block font-bold uppercase">Estimated Radius</span>
+                <span className="font-mono text-amber-300 font-bold">
                   {incident.estimatedLocation.radiusMeters} meters
                 </span>
               </div>
@@ -111,41 +112,41 @@ export const DataCapsuleModal: React.FC<DataCapsuleModalProps> = ({ incident, on
           </div>
 
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-bold text-slate-300 uppercase tracking-wider">
-                Capsule Storage Payload
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-xs font-bold text-zinc-300 uppercase tracking-wider">
+                IndexedDB Payload Body
               </span>
               <button
                 onClick={() => setShowRaw(!showRaw)}
-                className="text-xs text-indigo-400 hover:text-indigo-300 font-medium underline flex items-center gap-1"
+                className="text-xs text-orange-400 hover:text-orange-300 font-bold underline flex items-center gap-1"
               >
                 <FileText className="w-3.5 h-3.5" />
-                {showRaw ? 'Show Formatted JSON' : 'Show Encrypted String'}
+                {showRaw ? 'View JSON' : 'View Base64 Binary'}
               </button>
             </div>
 
             {showRaw ? (
-              <pre className="bg-slate-950 p-3 rounded-lg border border-slate-800 text-[10px] font-mono text-emerald-400 break-all overflow-x-auto max-h-32">
+              <pre className="bg-zinc-950 p-3 rounded-lg border border-zinc-800 text-[10px] font-mono text-orange-400 break-all overflow-x-auto max-h-32">
                 {encryptedPayloadSim}
               </pre>
             ) : (
-              <pre className="bg-slate-950 p-3 rounded-lg border border-slate-800 text-[11px] font-mono text-slate-300 overflow-x-auto max-h-40">
+              <pre className="bg-zinc-950 p-3 rounded-lg border border-zinc-800 text-[11px] font-mono text-zinc-300 overflow-x-auto max-h-40">
                 {JSON.stringify(capsuleData, null, 2)}
               </pre>
             )}
           </div>
         </div>
 
-        <div className="bg-slate-950 px-6 py-3 border-t border-slate-800 flex items-center justify-between text-xs">
-          <div className="flex items-center gap-2 text-slate-400">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-            <span>Checksum verified. Ready for automatic synchronization.</span>
+        <div className="bg-zinc-950 px-5 py-2.5 border-t border-zinc-800 flex items-center justify-between text-xs">
+          <div className="flex items-center gap-2 text-zinc-400">
+            <CheckCircle2 className="w-4 h-4 text-orange-400" />
+            <span>SHA256 Payload Checksum Verified</span>
           </div>
           <button
             onClick={onClose}
-            className="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors font-medium"
+            className="px-3.5 py-1 bg-zinc-800 hover:bg-zinc-700 text-white rounded transition-colors font-medium text-xs"
           >
-            Close Capsule
+            Close
           </button>
         </div>
       </div>

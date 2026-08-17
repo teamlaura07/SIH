@@ -3,6 +3,7 @@ import { useIncidents } from '../../context/IncidentContext';
 import { useConnectivity } from '../../context/ConnectivityContext';
 import { CURRENT_TOURIST } from '../../mockData/northeastData';
 import { DataCapsuleModal } from '../Common/DataCapsuleModal';
+import { IndianEmblem } from '../Common/IndianEmblem';
 import { 
   AlertOctagon, ShieldAlert, Battery, Compass, 
   Wifi, WifiOff, Lock, CheckCircle2, RefreshCw
@@ -40,55 +41,50 @@ export const TouristMobileView: React.FC = () => {
 
   const triggerFallDetection = async () => {
     setShowFallSimPrompt(false);
-    await createIncident('POSSIBLE_FALL', 'CRITICAL', pos, "Impact acceleration 4.8g detected (Possible Fall - Confidence 87%)");
+    await createIncident('POSSIBLE_FALL', 'CRITICAL', pos, "IMU Impact 4.8g detected (Possible Fall)");
   };
 
   return (
     <div className="flex flex-col items-center justify-center p-4 min-h-[85vh]">
-      <div className="relative w-full max-w-sm bg-slate-950 border-[10px] border-slate-800 rounded-[40px] shadow-2xl overflow-hidden text-slate-100 flex flex-col h-[750px]">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-36 h-5 bg-slate-800 rounded-b-xl z-30 flex items-center justify-center">
-          <div className="w-12 h-1 bg-slate-900 rounded-full" />
+      <div className="relative w-full max-w-sm bg-zinc-950 border-[8px] border-zinc-800 rounded-[36px] shadow-2xl overflow-hidden text-zinc-100 flex flex-col h-[740px]">
+        {/* Device Top Bar */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-4 bg-zinc-800 rounded-b-lg z-30 flex items-center justify-center">
+          <div className="w-10 h-1 bg-zinc-900 rounded-full" />
         </div>
 
-        <div className="bg-slate-900 px-6 pt-7 pb-2 flex items-center justify-between text-xs text-slate-400 z-20 border-b border-slate-800/60">
-          <span className="font-mono font-bold text-slate-200">09:41 AM</span>
-          <div className="flex items-center gap-2 text-[11px]">
-            {networkStatus === 'ONLINE' && <span className="flex items-center gap-1 text-emerald-400 font-medium"><Wifi className="w-3.5 h-3.5" /> 4G</span>}
-            {networkStatus === 'WEAK' && <span className="flex items-center gap-1 text-amber-400 font-medium"><Wifi className="w-3.5 h-3.5" /> E</span>}
-            {networkStatus === 'OFFLINE' && <span className="flex items-center gap-1 text-rose-400 font-medium"><WifiOff className="w-3.5 h-3.5" /> NO NET</span>}
-            <span className="flex items-center gap-1 text-amber-300 font-mono"><Battery className="w-3.5 h-3.5" /> 27%</span>
+        <div className="bg-zinc-900 px-5 pt-6 pb-2 flex items-center justify-between text-xs text-zinc-300 z-20 border-b border-zinc-800">
+          <div className="flex items-center gap-1.5">
+            <IndianEmblem className="w-4 h-5 text-zinc-200" />
+            <span className="font-mono text-[10px] text-zinc-400">09:41 AM</span>
+          </div>
+          <div className="flex items-center gap-2 text-[10px]">
+            {networkStatus === 'ONLINE' && <span className="flex items-center gap-1 text-orange-400 font-medium"><Wifi className="w-3 h-3" /> 4G</span>}
+            {networkStatus === 'WEAK' && <span className="flex items-center gap-1 text-amber-400 font-medium"><Wifi className="w-3 h-3" /> 2G</span>}
+            {networkStatus === 'OFFLINE' && <span className="flex items-center gap-1 text-zinc-400 font-medium"><WifiOff className="w-3 h-3" /> Offline</span>}
+            <span className="flex items-center gap-1 text-zinc-300 font-mono"><Battery className="w-3 h-3" /> 27%</span>
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-5 space-y-4">
-          <div className="bg-slate-900/90 border border-slate-800 p-3.5 rounded-2xl flex items-center justify-between">
+        <div className="flex-1 overflow-y-auto p-4 space-y-3.5">
+          <div className="bg-zinc-900 border border-zinc-800 p-3 rounded-xl flex items-center justify-between">
             <div>
-              <span className="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Active Tourist</span>
-              <h3 className="text-sm font-bold text-slate-100">{CURRENT_TOURIST.name}</h3>
-              <p className="text-[11px] text-slate-400">{CURRENT_TOURIST.trekRouteName}</p>
+              <span className="text-[10px] text-zinc-400 uppercase font-bold">Registered User</span>
+              <h3 className="text-xs font-bold text-zinc-100">{CURRENT_TOURIST.name}</h3>
+              <p className="text-[10px] text-zinc-400">{CURRENT_TOURIST.trekRouteName}</p>
             </div>
-            <div className="p-2 bg-blue-950/80 border border-blue-800/50 rounded-xl text-blue-400 text-xs font-mono">
+            <div className="px-2 py-1 bg-zinc-950 border border-zinc-700 rounded text-orange-400 text-[11px] font-mono font-bold">
               {CURRENT_TOURIST.id}
             </div>
           </div>
 
-          <div className={`p-3 rounded-2xl border text-xs flex items-center justify-between transition-all ${
-            networkStatus === 'ONLINE'
-              ? 'bg-emerald-950/50 border-emerald-800/50 text-emerald-300'
-              : networkStatus === 'WEAK'
-              ? 'bg-amber-950/50 border-amber-800/50 text-amber-300'
-              : 'bg-rose-950/50 border-rose-800/50 text-rose-300'
-          }`}>
+          <div className="p-2.5 rounded-xl border border-zinc-800 bg-zinc-900 text-xs flex items-center justify-between">
             <div className="flex items-center gap-2">
-              {networkStatus === 'OFFLINE' ? <WifiOff className="w-4 h-4 text-rose-400 animate-pulse" /> : <Wifi className="w-4 h-4 text-emerald-400" />}
+              {networkStatus === 'OFFLINE' ? <WifiOff className="w-4 h-4 text-zinc-400" /> : <Wifi className="w-4 h-4 text-orange-400" />}
               <div>
                 <div className="font-bold text-[11px]">
-                  {networkStatus === 'ONLINE' && 'Connected to Central Network'}
-                  {networkStatus === 'WEAK' && 'Weak Connectivity Detected'}
-                  {networkStatus === 'OFFLINE' && 'Zero-Network Offline Mode'}
-                </div>
-                <div className="text-[10px] opacity-80">
-                  {networkStatus === 'OFFLINE' ? 'Storing incident capsules in local IndexedDB' : 'Direct sync active'}
+                  {networkStatus === 'ONLINE' && 'Network Connected'}
+                  {networkStatus === 'WEAK' && 'Degraded Signal'}
+                  {networkStatus === 'OFFLINE' && 'Offline Mode (IndexedDB Queue)'}
                 </div>
               </div>
             </div>
@@ -96,117 +92,104 @@ export const TouristMobileView: React.FC = () => {
             <select
               value={networkStatus}
               onChange={(e) => setNetworkStatus(e.target.value as any)}
-              className="bg-slate-900 border border-slate-700 text-[10px] rounded-lg px-2 py-1 text-slate-200 focus:outline-none"
+              className="bg-zinc-950 border border-zinc-700 text-[10px] rounded px-1.5 py-1 text-zinc-200 focus:outline-none"
             >
-              <option value="ONLINE">🟢 Online</option>
-              <option value="WEAK">🟡 Weak</option>
-              <option value="OFFLINE">🔴 Offline</option>
+              <option value="ONLINE">Online</option>
+              <option value="WEAK">Weak</option>
+              <option value="OFFLINE">Offline</option>
             </select>
           </div>
 
-          <div className="bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-800 p-5 rounded-3xl text-center space-y-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-300">
-              Emergency Response Trigger
-            </h4>
+          <div className="bg-zinc-900 border border-zinc-800 p-4 rounded-2xl text-center space-y-3">
+            <span className="text-xs font-bold uppercase tracking-wider text-zinc-300 block">
+              Emergency SOS Trigger
+            </span>
 
             {sosCountdown !== null ? (
-              <div className="py-4 space-y-3 bg-rose-950/80 border border-rose-600/60 rounded-2xl animate-pulse">
-                <div className="text-3xl font-extrabold text-rose-400 font-mono">
+              <div className="py-3 space-y-2 bg-orange-950/80 border border-orange-600 rounded-xl">
+                <div className="text-2xl font-bold text-orange-400 font-mono">
                   {sosCountdown}s
                 </div>
-                <div className="text-xs text-rose-200 font-semibold uppercase tracking-wider">
-                  CANCEL INCIDENT CREATION?
+                <div className="text-[10px] text-orange-200 font-semibold uppercase">
+                  Dispatching in {sosCountdown} seconds...
                 </div>
                 <button
                   onClick={cancelSOS}
-                  className="px-6 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold border border-slate-700 shadow-lg"
+                  className="px-4 py-1.5 bg-zinc-900 text-white rounded-lg text-xs font-bold border border-zinc-700"
                 >
-                  CANCEL (FALSE ALARM)
+                  Cancel SOS
                 </button>
               </div>
             ) : (
               <button
                 onClick={() => setSosCountdown(5)}
-                className="w-full py-7 bg-gradient-to-r from-rose-600 to-red-700 hover:from-rose-500 hover:to-red-600 text-white rounded-2xl font-black text-xl tracking-wider shadow-lg shadow-rose-900/40 active:scale-95 transition-all flex items-center justify-center gap-2 border border-rose-500/40"
+                className="w-full py-6 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-zinc-950 rounded-xl font-black text-lg tracking-wider shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2"
               >
-                <AlertOctagon className="w-7 h-7" />
-                <span>PRESS SOS</span>
+                <AlertOctagon className="w-6 h-6" />
+                <span>EMERGENCY SOS</span>
               </button>
             )}
 
-            <p className="text-[10px] text-slate-400">
-              {sosCountdown !== null ? 'Emergency alert will dispatch automatically after countdown' : 'Initiates instant emergency capsule creation'}
+            <p className="text-[10px] text-zinc-400">
+              Instant priority emergency alert dispatch
             </p>
           </div>
 
-          <div className="bg-slate-900/90 border border-slate-800 p-3.5 rounded-2xl space-y-2">
+          <div className="bg-zinc-900 border border-zinc-800 p-3 rounded-xl space-y-2">
             <div className="flex items-center justify-between text-xs">
-              <span className="font-bold text-slate-300 flex items-center gap-1.5">
-                <Compass className="w-4 h-4 text-cyan-400" />
-                Sensor Auto-Detection Simulator
+              <span className="font-bold text-zinc-300 flex items-center gap-1.5">
+                <Compass className="w-3.5 h-3.5 text-orange-400" />
+                Sensor Impact Simulation
               </span>
-              <span className="text-[10px] text-slate-500 font-mono">IMU 6-Axis</span>
             </div>
-
-            <p className="text-[11px] text-slate-400 leading-tight">
-              Simulates impact accelerometers detecting sudden posture changes or terrain drop.
-            </p>
 
             <button
               onClick={() => setShowFallSimPrompt(true)}
-              className="w-full py-2 bg-amber-950/80 hover:bg-amber-900 text-amber-300 border border-amber-700/50 rounded-xl text-xs font-bold flex items-center justify-center gap-2 transition-colors"
+              className="w-full py-1.5 bg-zinc-950 hover:bg-zinc-800 text-orange-400 border border-zinc-700 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
             >
-              <ShieldAlert className="w-4 h-4 text-amber-400" />
-              Simulate "Possible Fall – Confidence 87%"
+              <ShieldAlert className="w-3.5 h-3.5 text-orange-400" />
+              Simulate Fall Impact Alert
             </button>
           </div>
 
           {activeIncident && (
-            <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl space-y-3">
+            <div className="bg-zinc-900 border border-zinc-800 p-3 rounded-xl space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-emerald-400 flex items-center gap-1 font-mono">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
+                <span className="text-xs font-bold text-orange-400 font-mono">
                   {activeIncident.incidentId}
                 </span>
-                <span className={`text-[10px] px-2 py-0.5 rounded font-mono font-bold ${
-                  activeIncident.syncStatus === 'SYNCED'
-                    ? 'bg-emerald-950 text-emerald-300 border border-emerald-800'
-                    : 'bg-amber-950 text-amber-300 border border-amber-800'
-                }`}>
+                <span className="text-[10px] px-1.5 py-0.5 rounded font-mono bg-zinc-950 text-zinc-300 border border-zinc-800">
                   {activeIncident.syncStatus}
                 </span>
               </div>
 
-              <div className="text-xs space-y-1 text-slate-300">
+              <div className="text-xs space-y-0.5 text-zinc-300">
                 <div>Type: <strong className="text-white">{activeIncident.incidentType}</strong></div>
-                <div>Status: <strong className="text-cyan-400">{activeIncident.status}</strong></div>
-                <div className="text-[10px] text-slate-400 font-mono">
-                  GPS: {activeIncident.lastKnownLocation.latitude.toFixed(5)}, {activeIncident.lastKnownLocation.longitude.toFixed(5)}
-                </div>
+                <div>Status: <strong className="text-orange-400">{activeIncident.status}</strong></div>
               </div>
 
               <button
                 onClick={() => setShowCapsuleModal(true)}
-                className="w-full py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-medium border border-slate-700 flex items-center justify-center gap-1.5"
+                className="w-full py-1 bg-zinc-800 text-zinc-200 rounded text-[11px] font-medium border border-zinc-700 flex items-center justify-center gap-1"
               >
-                <Lock className="w-3.5 h-3.5 text-emerald-400" />
-                View Local Emergency Capsule
+                <Lock className="w-3 h-3 text-orange-400" />
+                View Local Encrypted Data
               </button>
             </div>
           )}
         </div>
 
-        <div className="bg-slate-900 p-3 border-t border-slate-800 text-[11px] text-slate-400 flex items-center justify-between">
-          <div className="flex items-center gap-1.5">
-            <RefreshCw className={`w-3.5 h-3.5 text-blue-400 ${isSyncing ? 'animate-spin' : ''}`} />
-            <span>Queue: {pendingSyncCount} items</span>
+        <div className="bg-zinc-900 p-2.5 border-t border-zinc-800 text-[10px] text-zinc-400 flex items-center justify-between">
+          <div className="flex items-center gap-1">
+            <RefreshCw className={`w-3 h-3 text-orange-400 ${isSyncing ? 'animate-spin' : ''}`} />
+            <span>Local Queue: {pendingSyncCount}</span>
           </div>
           {pendingSyncCount > 0 && networkStatus === 'ONLINE' && (
             <button
               onClick={() => triggerManualSync()}
-              className="text-emerald-400 hover:underline text-[10px] font-bold"
+              className="text-orange-400 font-bold"
             >
-              Sync Now
+              Sync Queue
             </button>
           )}
         </div>
@@ -214,29 +197,28 @@ export const TouristMobileView: React.FC = () => {
 
       {showFallSimPrompt && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-          <div className="bg-slate-900 border border-amber-600/60 rounded-2xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl animate-in zoom-in-95">
-            <div className="w-12 h-12 rounded-full bg-amber-950 border border-amber-600/60 flex items-center justify-center mx-auto text-amber-400">
-              <ShieldAlert className="w-6 h-6" />
+          <div className="bg-zinc-900 border border-zinc-700 rounded-xl max-w-sm w-full p-5 text-center space-y-3 shadow-xl">
+            <div className="w-10 h-10 rounded-full bg-zinc-950 border border-zinc-700 flex items-center justify-center mx-auto text-orange-400">
+              <ShieldAlert className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-slate-100">Possible Fall Detected</h3>
-              <p className="text-xs text-amber-300 font-mono mt-1">Sensor Confidence: 87%</p>
-              <p className="text-xs text-slate-400 mt-2">
-                Sudden downward deceleration detected on Nohkalikai Ridge Trail. Are you safe?
+              <h3 className="text-sm font-bold text-zinc-100">Fall Detection Triggered</h3>
+              <p className="text-xs text-zinc-400 mt-1">
+                Deceleration impact recorded. Confirm emergency dispatch?
               </p>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 pt-1">
               <button
                 onClick={() => setShowFallSimPrompt(false)}
-                className="flex-1 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold border border-slate-700"
+                className="flex-1 py-2 bg-zinc-800 text-zinc-200 rounded-lg text-xs font-bold border border-zinc-700"
               >
-                I AM SAFE (CANCEL)
+                False Alarm
               </button>
               <button
                 onClick={triggerFallDetection}
-                className="flex-1 py-2.5 bg-rose-600 hover:bg-rose-500 text-white rounded-xl text-xs font-bold shadow-lg shadow-rose-900/30"
+                className="flex-1 py-2 bg-orange-500 text-zinc-950 rounded-lg text-xs font-bold"
               >
-                CONFIRM INCIDENT
+                Confirm SOS
               </button>
             </div>
           </div>

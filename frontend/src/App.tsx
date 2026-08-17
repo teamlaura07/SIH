@@ -31,7 +31,7 @@ export function App() {
     <ConnectivityProvider>
       <IncidentProvider>
         <RoleProvider>
-          <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-rose-500 selection:text-white">
+          <div className="min-h-screen bg-zinc-950 text-zinc-100 font-sans selection:bg-orange-500 selection:text-zinc-950">
             <Navbar />
             <MainContent />
           </div>

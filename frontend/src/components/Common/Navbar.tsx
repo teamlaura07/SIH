@@ -2,7 +2,8 @@ import React from 'react';
 import { useRole } from '../../context/RoleContext';
 import { ConnectivityBadge } from './ConnectivityBadge';
 import { SyncQueueBadge } from './SyncQueueBadge';
-import { Shield, Smartphone, Radio, Zap, Activity } from 'lucide-react';
+import { IndianEmblem } from './IndianEmblem';
+import { LayoutDashboard, Smartphone, Radio, TestTube2 } from 'lucide-react';
 import type { ViewRole } from '../../types/incident';
 
 export const Navbar: React.FC = () => {
@@ -11,69 +12,75 @@ export const Navbar: React.FC = () => {
   const navItems: { id: ViewRole; label: string; icon: React.ReactNode }[] = [
     {
       id: 'CONTROL_ROOM',
-      label: 'Control Room Dashboard',
-      icon: <Shield className="w-4 h-4 text-emerald-400" />
+      label: 'Control Room',
+      icon: <LayoutDashboard className="w-4 h-4" />
     },
     {
       id: 'TOURIST_PWA',
-      label: 'Tourist Mobile PWA',
-      icon: <Smartphone className="w-4 h-4 text-blue-400" />
+      label: 'Tourist Mobile App',
+      icon: <Smartphone className="w-4 h-4" />
     },
     {
       id: 'RESCUE_TEAM',
-      label: 'Rescue Team Terminal',
-      icon: <Radio className="w-4 h-4 text-amber-400" />
+      label: 'Field Unit Terminal',
+      icon: <Radio className="w-4 h-4" />
     },
     {
       id: 'DEMO_GUIDE',
-      label: 'Interactive Demo Suite',
-      icon: <Zap className="w-4 h-4 text-purple-400" />
+      label: 'Scenario Runner',
+      icon: <TestTube2 className="w-4 h-4" />
     }
   ];
 
   return (
-    <header className="bg-slate-950/90 border-b border-slate-800 backdrop-blur-md sticky top-0 z-40 px-4 lg:px-8 py-3">
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+    <header className="bg-zinc-900 border-b border-zinc-700/80 sticky top-0 z-40 px-4 lg:px-8 py-2.5 shadow-md">
+      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-gradient-to-br from-rose-600 to-red-700 rounded-xl text-white shadow-lg shadow-rose-950/50">
-            <Activity className="w-6 h-6 animate-pulse" />
+          <div className="p-1.5 bg-zinc-950 border border-zinc-700 rounded-lg flex items-center justify-center">
+            <IndianEmblem className="w-7 h-8 text-zinc-200" />
           </div>
+
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-base font-black tracking-tight text-white">
-                SIH25002 <span className="text-rose-500 font-normal">| Hybrid Incident Response</span>
+              <h1 className="text-sm font-bold tracking-tight text-zinc-100 uppercase">
+                National Incident Response System
               </h1>
-              <span className="text-[10px] bg-slate-800 text-slate-300 border border-slate-700 px-2 py-0.5 rounded font-mono font-semibold">
-                NE INDIA SCENARIO
+              <span className="text-[10px] bg-zinc-800 text-zinc-300 border border-zinc-700 px-1.5 py-0.5 rounded font-mono font-semibold">
+                NIRS-v2.4
               </span>
             </div>
-            <p className="text-xs text-slate-400">
-              "Network loss should change the communication path, not stop the rescue response."
+            <p className="text-[11px] text-zinc-400">
+              Meghalaya & NE Regional Command Center • Operations Unit 04
             </p>
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex items-center gap-3">
           <SyncQueueBadge />
           <ConnectivityBadge />
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto mt-3 flex gap-2 border-t border-slate-800/80 pt-2 overflow-x-auto text-xs">
-        {navItems.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => setActiveRole(item.id)}
-            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl font-bold transition-all ${
-              activeRole === item.id
-                ? 'bg-slate-800 text-white border border-slate-700 shadow-md'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
-            }`}
-          >
-            {item.icon}
-            <span>{item.label}</span>
-          </button>
-        ))}
+      <div className="max-w-7xl mx-auto mt-2 flex gap-1.5 border-t border-zinc-800 pt-2 overflow-x-auto text-xs">
+        {navItems.map((item) => {
+          const isActive = activeRole === item.id;
+          return (
+            <button
+              key={item.id}
+              onClick={() => setActiveRole(item.id)}
+              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg font-medium transition-all ${
+                isActive
+                  ? 'bg-orange-500 text-zinc-950 font-bold shadow'
+                  : 'bg-zinc-800/80 text-zinc-300 border border-zinc-700/70 hover:bg-zinc-750 hover:text-zinc-100'
+              }`}
+            >
+              <span className={isActive ? 'text-zinc-950' : 'text-orange-400'}>
+                {item.icon}
+              </span>
+              <span>{item.label}</span>
+            </button>
+          );
+        })}
       </div>
     </header>
   );

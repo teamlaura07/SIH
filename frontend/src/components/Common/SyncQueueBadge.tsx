@@ -10,35 +10,35 @@ export const SyncQueueBadge: React.FC = () => {
       <button
         onClick={() => triggerManualSync()}
         disabled={isSyncing || networkStatus === 'OFFLINE'}
-        title="Trigger manual sync flush"
-        className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
+        title="Flush local IndexedDB queue"
+        className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-medium border transition-all ${
           isSyncing
-            ? 'bg-blue-950/90 border-blue-600/50 text-blue-300'
+            ? 'bg-zinc-800 border-orange-500/70 text-orange-300'
             : pendingSyncCount > 0
-            ? 'bg-amber-950/90 border-amber-600/50 text-amber-300 animate-pulse'
-            : 'bg-slate-900/80 border-slate-800 text-slate-300 hover:border-slate-700'
+            ? 'bg-amber-950/80 border-amber-500/70 text-amber-300'
+            : 'bg-zinc-850 border-zinc-700/80 text-zinc-300 hover:border-zinc-500'
         }`}
       >
         {isSyncing ? (
-          <RefreshCw className="w-3.5 h-3.5 animate-spin text-blue-400" />
+          <RefreshCw className="w-3 h-3 animate-spin text-orange-400" />
         ) : pendingSyncCount > 0 ? (
-          <CloudOff className="w-3.5 h-3.5 text-amber-400" />
+          <CloudOff className="w-3 h-3 text-amber-400" />
         ) : (
-          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+          <CheckCircle2 className="w-3 h-3 text-orange-400" />
         )}
 
         <span>
           {isSyncing
-            ? 'SYNCING...'
+            ? 'Syncing...'
             : pendingSyncCount > 0
-            ? `${pendingSyncCount} QUEUED FOR SYNC`
-            : 'ALL DATA SYNCED'}
+            ? `Sync Queue (${pendingSyncCount})`
+            : 'Synced'}
         </span>
       </button>
 
       {lastSyncedAt && (
-        <span className="hidden xl:inline text-[11px] text-slate-400 font-mono">
-          Last synced: {lastSyncedAt}
+        <span className="hidden xl:inline text-[10px] text-zinc-400 font-mono">
+          Last sync: {lastSyncedAt}
         </span>
       )}
     </div>

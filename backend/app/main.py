@@ -4,7 +4,7 @@ import logging
 
 from app.config import settings
 from app.database import engine, Base, SessionLocal
-from app.routers import incidents_router, rescue_router, simulation_router
+from app.routers import incidents_router, rescue_router, simulation_router, auth_router, digital_id_router
 from app.seed_data import seed_database
 from app.websocket_manager import manager
 
@@ -34,6 +34,8 @@ app.add_middleware(
 )
 
 # Include Routers
+app.include_router(auth_router, prefix=settings.API_V1_STR)
+app.include_router(digital_id_router, prefix=settings.API_V1_STR)
 app.include_router(incidents_router, prefix=settings.API_V1_STR)
 app.include_router(rescue_router, prefix=settings.API_V1_STR)
 app.include_router(simulation_router, prefix=settings.API_V1_STR)

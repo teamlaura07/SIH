@@ -142,3 +142,4 @@ See `docs/INTEGRATION_GUIDE.md` for full details.
 ## 8. Known Limitations & Hardware Extensions
 
 - **Hardware Extension Simulation**: Long-range hardware interfaces (LoRa 868MHz Gateway & BLE Mesh Relay) are provided as structured software abstractions in `adaptiveCommManager.ts`. In a production hardware deployment, these interface with physical Sub-GHz RF modules.
+..

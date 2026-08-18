@@ -14,6 +14,8 @@ from app.schemas.capsule import EmergencyCapsule
 from app.services.severity_engine import classify_incident_severity
 from app.services.location_estimator import calculate_probable_search_area
 from app.services.rescue_optimizer import recommend_best_rescue_team
+from app.services.geofence_engine import check_geofence_breach
+from app.services.idempotency import check_and_acquire_idempotency_key
 from app.websocket_manager import manager
 
 router = APIRouter(prefix="/incidents", tags=["Incidents"])
@@ -66,13 +68,23 @@ async def create_or_upsert_incident(
     db: Session = Depends(get_db)
 ):
     """
-    Idempotent single incident intake/sync endpoint.
+    Idempotent single incident intake/sync endpoint with Redis/DB idempotency key checking.
     If incident already exists (matching incidentId), merges updates safely.
     """
+    # 1. Idempotency Key Lock Check
+    check_and_acquire_idempotency_key(payload.incidentId)
+
     existing = db.query(IncidentModel).filter(IncidentModel.incidentId == payload.incidentId).first()
     
+    # 2. PostGIS / Spatial Geofence Breach Assessment
+    gf = check_geofence_breach(db, payload.lastKnownLocation.latitude, payload.lastKnownLocation.longitude)
+    
     # Classify severity dynamically if needed
-    calculated_severity = payload.severity or classify_incident_severity(payload.incidentType, payload.batteryLevel)
+    calculated_severity = payload.severity or classify_incident_severity(
+        payload.incidentType, 
+        payload.batteryLevel,
+        in_danger_zone=gf["in_danger_zone"]
+    )
     
     # Calculate estimated search area
     est = calculate_probable_search_area(
